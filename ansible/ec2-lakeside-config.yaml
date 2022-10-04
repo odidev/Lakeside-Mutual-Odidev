@@ -1,0 +1,62 @@
+- hosts: lakeside
+  become: True
+  tasks:
+
+  - name: Update the machine
+    command: sudo apt update -y
+    
+  - name: Installing essentials
+    command: sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+      
+  - name: Installing Curl
+    command: sudo apt install curl -y
+  
+  - name: Installing git
+    command: sudo apt install git -y
+
+  - name: Installing Lakeside dependencices
+    command: sudo apt install nodejs npm default-jdk default-jre maven python3 python3-pip python2 -y 
+
+  - name: Installing node-gyp npm module
+    command: npm install -g node-gyp 
+
+  - name: Cloning the repository
+    command: git clone https://github.com/Microservice-API-Patterns/LakesideMutual.git 
+
+  - name: Update IP of customer-management-frontend
+    shell: |
+      cat <<EOF> LakesideMutual/customer-management-frontend/.env
+      PORT=3020
+      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(curl ifconfig.me):8080
+      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8100
+      EOF
+
+  - name: Update IP of customer-self-serivce-frontend
+    shell: |
+      cat <<EOF> LakesideMutual/customer-self-service-frontend/.env
+      PORT=3000
+      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(curl ifconfig.me):8080
+      REACT_APP_POLICY_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8090
+      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8100
+      EOF
+        
+  - name: Update IP of policy-management-frontend
+    shell: |
+      cat <<EOF> LakesideMutual/policy-management-frontend/.env
+      VUE_APP_POLICY_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8090
+      EOF
+
+  - name: Update IP of policy-management-frontend-vue
+    shell: |
+      cat <<EOF> LakesideMutual/policy-management-frontend/vue.config.js
+      module.exports = {
+      runtimeCompiler: true,
+      devServer: {
+        host: '$(curl ifconfig.me)',
+        port: 3010
+        }
+      }
+      EOF
+
+  - name: Run lakeside
+    shell: cd  LakesideMutual/ && sudo npm install recursive-install && sudo  npm install concurrently && sudo ./run_all_applications.sh
