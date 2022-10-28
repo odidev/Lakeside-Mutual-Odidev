@@ -13,6 +13,8 @@ resource "aws_vpc" "Lakeside_VPC" {
 
 
 // Subnet creation 
+
+// 1. Public Subnet for Jump server
 resource "aws_subnet" "Lakeside_Jump_Subnet" {
     vpc_id                  = aws_vpc.Lakeside_VPC.id
     cidr_block              = "10.1.1.0/24"
@@ -23,6 +25,7 @@ resource "aws_subnet" "Lakeside_Jump_Subnet" {
     }
 }
 
+// 2. Private Subnet 
 resource "aws_subnet" "Lakeside_Subnet" {
     vpc_id                  = aws_vpc.Lakeside_VPC.id
     map_public_ip_on_launch = "true"
@@ -33,7 +36,7 @@ resource "aws_subnet" "Lakeside_Subnet" {
     }
 }
 
-// Internet gateways
+// Internet gateway
 
 resource "aws_internet_gateway" "Lakeside_VPC_GW" {
     vpc_id = aws_vpc.Lakeside_VPC.id
@@ -64,7 +67,7 @@ resource "aws_route_table_association" "Lakeside_VPC_association" {
 
 resource "aws_eip" "jump-eip" {
     vpc              = true
-    public_ipv4_pool = "Bastion_Jump_EIP"
+    public_ipv4_pool = "amazon"
 }
 
 
@@ -97,4 +100,43 @@ resource "aws_route_table_association" "private_subnet_route_table_association" 
     depends_on = [aws_route_table.private_subnet_route_table]
     subnet_id      = aws_subnet.Lakeside_Subnet.id
     route_table_id = aws_route_table.private_subnet_route_table.id
+}
+
+
+//  Treafik Proxy Set UP
+
+// 3. Public Subnet for proxy server
+resource "aws_subnet" "traefik_proxy_subnet" {
+    vpc_id                  = aws_vpc.Lakeside_VPC.id
+    count                   = "${var.deploy_traefik_proxy}" ? 1 : 0
+    cidr_block              = "10.1.3.0/24"
+    map_public_ip_on_launch = "true"
+    availability_zone       = "us-east-1a"
+    tags = {
+      Name = "Traefik Proxy Public Subnet"
+    }
+}
+
+resource "aws_route_table" "traefik_proxy_route_table" {
+    count                   = "${var.deploy_traefik_proxy}" ? 1 : 0
+    vpc_id = aws_vpc.Lakeside_VPC.id
+    
+    tags = {
+            Name = "Traefik Proxy Route Table"
+    }
+}
+
+resource "aws_route" "traefik_proxy_internet_access" {
+    count                  = "${var.deploy_traefik_proxy}" ? 1 : 0
+    route_table_id         = aws_route_table.traefik_proxy_route_table[0].id
+    destination_cidr_block =  "0.0.0.0/0"
+    gateway_id             = aws_internet_gateway.Lakeside_VPC_GW.id
+    
+}
+
+resource "aws_route_table_association" "traefik_proxy_RT_association" {
+    count                   = "${var.deploy_traefik_proxy}" ? 1 : 0
+    subnet_id      = aws_subnet.traefik_proxy_subnet[0].id
+    route_table_id = aws_route_table.traefik_proxy_route_table[0].id
+    
 }

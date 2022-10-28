@@ -42,3 +42,21 @@ variable "locust-disk-size" {
     description = "Root disk size of Locust server"
     default = 8
 }
+
+
+// Traefik proxy Credentials
+
+variable "deploy_traefik_proxy" {
+    description = "Make true to deploy the traefik proxy instance"
+  default = false                    // make true to deploy an intance for traefik proxy
+}
+
+variable "traefik-proxy-instance-type" {
+    description = "Instance Type of Locust server"
+    default = "t4g.small"
+}
+
+variable "traefik-proxy-disk-size" {
+    description = "Root disk size of Locust server"
+    default = 8
+}

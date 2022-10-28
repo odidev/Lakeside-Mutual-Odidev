@@ -1,5 +1,5 @@
 resource "aws_security_group" "only_ssh_bositon" {
-    depends_on=[aws_subnet.Lakeside_VPC_Subnet]
+    depends_on=[aws_subnet.Lakeside_Jump_Subnet]
     name        = "only_ssh_bositon"
     vpc_id      =  aws_vpc.Lakeside_VPC.id
 
@@ -113,7 +113,6 @@ resource "aws_security_group" "lakeside_http" {
 }
 
 resource "aws_security_group" "only_ssh_private_instance" {
-    depends_on=[aws_subnet.Lakeside_VPC_Subnet]
     name        = "only_ssh_private_instance"
     description = "allow ssh bositon inbound traffic"
     vpc_id      =  aws_vpc.Lakeside_VPC.id
@@ -137,5 +136,33 @@ resource "aws_security_group" "only_ssh_private_instance" {
 
     tags = {
       Name = "only_ssh_sql_bositon"
+    }
+}
+
+
+// traefik proxy
+
+resource "aws_security_group" "traefik_proxy_SG" {
+    name        = "Traefik Proxy Security group"
+    description = "Traefik Proxy Security group"
+    vpc_id      =  aws_vpc.Lakeside_VPC.id
+    count       = "${var.deploy_traefik_proxy}" ? 1 : 0
+
+    ingress {
+        description = "Only ssh_sql_bositon in public subnet"
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+    }
+
+    egress {
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+
+    tags = {
+      Name = "Traefik Proxy Security group"
     }
 }

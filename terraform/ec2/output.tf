@@ -17,3 +17,11 @@ output "locust-private-ip" {
 output "bastionhost-public-ip" {
   value = aws_instance.BASTION.public_ip
 }
+
+output "traefik-proxy-public-ip" {
+  value = try(aws_instance.traefik-proxy-ec2[0].public_ip,"")
+}
+
+output "traefik-proxy-private-ip" {
+  value = try(aws_instance.traefik-proxy-ec2[0].private_ip,"")
+}

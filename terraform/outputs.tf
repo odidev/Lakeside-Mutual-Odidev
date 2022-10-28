@@ -22,3 +22,13 @@ output "Locust-Private-IP" {
     description = "Locust instance private IP"
     value = module.ec2.locust-private-ip
 }
+
+output "Traefik-Proxy-Public-IP" {
+    description = "Traefik proxy public IP"
+    value = module.ec2.traefik-proxy-public-ip
+}
+
+output "Traefik-Proxy-Private-IP" {
+    description = "Traefik Proxy private IP"
+    value = module.ec2.traefik-proxy-private-ip
+}
