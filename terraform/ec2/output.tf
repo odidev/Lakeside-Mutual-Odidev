@@ -25,3 +25,13 @@ output "traefik-proxy-public-ip" {
 output "traefik-proxy-private-ip" {
   value = try(aws_instance.traefik-proxy-ec2[0].private_ip,"")
 }
+
+output "lakeside-nodes-public_ip" {
+  value = [aws_instance.lakeside-node-ec2.*.public_ip, 
+          aws_instance.lakeside-node-ec2.*.tags.Name]
+}
+
+output "lakeside-nodes-private_ip" {
+  value = [aws_instance.lakeside-node-ec2.*.private_ip, 
+          aws_instance.lakeside-node-ec2.*.tags.Name]
+}

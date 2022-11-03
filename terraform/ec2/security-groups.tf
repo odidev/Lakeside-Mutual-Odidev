@@ -146,7 +146,6 @@ resource "aws_security_group" "traefik_proxy_SG" {
     name        = "Traefik Proxy Security group"
     description = "Traefik Proxy Security group"
     vpc_id      =  aws_vpc.Lakeside_VPC.id
-    count       = "${var.deploy_traefik_proxy}" ? 1 : 0
 
     ingress {
         description = "Only ssh_sql_bositon in public subnet"

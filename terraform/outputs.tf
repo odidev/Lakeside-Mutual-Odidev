@@ -32,3 +32,13 @@ output "Traefik-Proxy-Private-IP" {
     description = "Traefik Proxy private IP"
     value = module.ec2.traefik-proxy-private-ip
 }
+
+output "lakeside-node-public_ip" {
+    description = "Public IP of all the lakeside nodes"
+    value = module.ec2.lakeside-nodes-public_ip
+}
+
+output "lakeside-node-private_ip" {
+    description = "Private IP of all the lakeside nodes"
+    value = module.ec2.lakeside-nodes-private_ip
+}

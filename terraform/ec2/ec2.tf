@@ -1,4 +1,4 @@
-// Bastion/Jump server
+// Bastion Jump server
 
 resource "aws_instance" "BASTION" {
     ami           = "${var.ubuntu-ami}"
@@ -26,7 +26,7 @@ resource "aws_instance" "Locust-ec2" {
     ami           = "${var.ubuntu-ami}"
     instance_type = "${var.locust-instance-type}"
     subnet_id = aws_subnet.Lakeside_Subnet.id
-    vpc_security_group_ids = [ aws_security_group.only_ssh_private_instance.id,aws_security_group.locust_test_lakeside.id, try(aws_security_group.traefik_proxy_SG[0].id,"")]
+    vpc_security_group_ids = [ aws_security_group.only_ssh_private_instance.id,aws_security_group.locust_test_lakeside.id, aws_security_group.traefik_proxy_SG.id]
     key_name = "task1-key"
 
     root_block_device {
@@ -48,7 +48,7 @@ resource "aws_instance" "lakeside-ec2" {
     ami           = "${var.ubuntu-ami}"
     instance_type = "${var.lakeside-instance-type}"
     subnet_id = aws_subnet.Lakeside_Subnet.id
-    vpc_security_group_ids = [ aws_security_group.lakeside_http.id,aws_security_group.only_ssh_private_instance.id,try(aws_security_group.traefik_proxy_SG[0].id,"") ]
+    vpc_security_group_ids = [ aws_security_group.lakeside_http.id,aws_security_group.only_ssh_private_instance.id,aws_security_group.traefik_proxy_SG.id ]
     key_name = "task1-key"
 
     root_block_device {
@@ -69,11 +69,10 @@ resource "aws_instance" "lakeside-ec2" {
 resource "aws_instance" "traefik-proxy-ec2" {
     ami           = "${var.ubuntu-ami}"
     instance_type = "${var.traefik-proxy-instance-type}"
-    depends_on = [aws_security_group.traefik_proxy_SG[0]]
     count       = "${var.deploy_traefik_proxy}" ? 1 : 0
 
     subnet_id = aws_subnet.traefik_proxy_subnet[0].id
-    vpc_security_group_ids = [ aws_security_group.traefik_proxy_SG[0].id,aws_security_group.only_ssh_private_instance.id ]
+    vpc_security_group_ids = [ aws_security_group.traefik_proxy_SG.id,aws_security_group.only_ssh_private_instance.id ]
     key_name = "task1-key"
 
     root_block_device {
@@ -85,5 +84,27 @@ resource "aws_instance" "traefik-proxy-ec2" {
 
     tags = {
         Name = "Traefik-Proxy"
+        }
+}
+
+// Node instance
+
+resource "aws_instance" "lakeside-node-ec2" {
+    count = "${var.lakeside-node-count}"
+    ami           = "${var.ubuntu-ami}"
+    instance_type = "${var.lakeside-node-instance-type}"
+    subnet_id = aws_subnet.Lakeside_Subnet.id
+    vpc_security_group_ids = [ aws_security_group.lakeside_http.id,aws_security_group.only_ssh_private_instance.id,aws_security_group.traefik_proxy_SG.id ]
+    key_name = "task1-key"
+
+    root_block_device {
+        volume_size = "${var.lakeside-node-disk-size}"
+        volume_type = "gp2"
+        encrypted             = true
+        delete_on_termination = true
+        }
+
+    tags = {
+        Name = "Lakeside-node-${count.index + 1}"
         }
 }

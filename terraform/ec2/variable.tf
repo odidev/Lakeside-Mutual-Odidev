@@ -48,7 +48,7 @@ variable "locust-disk-size" {
 
 variable "deploy_traefik_proxy" {
     description = "Make true to deploy the traefik proxy instance"
-  default = false                    // make true to deploy an intance for traefik proxy
+    default = false                    // make true to deploy an intance for traefik proxy
 }
 
 variable "traefik-proxy-instance-type" {
@@ -57,6 +57,25 @@ variable "traefik-proxy-instance-type" {
 }
 
 variable "traefik-proxy-disk-size" {
+    description = "Root disk size of Locust server"
+    default = 8
+}
+
+
+
+// Lakeside node instance Credentials 
+
+variable "lakeside-node-count" {
+    description = "Make true to deploy the traefik proxy instance"
+  default = 10                
+}
+
+variable "lakeside-node-instance-type" {
+    description = "Lakeside Node instance Type "
+    default = "t4g.small"
+}
+
+variable "lakeside-node-disk-size" {
     description = "Root disk size of Locust server"
     default = 8
 }
