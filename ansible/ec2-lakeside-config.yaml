@@ -27,23 +27,23 @@
     shell: |
       cat <<EOF> LakesideMutual/customer-management-frontend/.env
       PORT=3020
-      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(curl ifconfig.me):8080
-      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8100
+      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(hostname -I | awk '{print $1}'):8080
+      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(hostname -I | awk '{print $1}'):8100
       EOF
 
   - name: Update IP of customer-self-serivce-frontend
     shell: |
       cat <<EOF> LakesideMutual/customer-self-service-frontend/.env
       PORT=3000
-      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(curl ifconfig.me):8080
-      REACT_APP_POLICY_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8090
-      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8100
+      REACT_APP_CUSTOMER_SELF_SERVICE_BACKEND=http://$(hostname -I | awk '{print $1}'):8080
+      REACT_APP_POLICY_MANAGEMENT_BACKEND=http://$(hostname -I | awk '{print $1}'):8090
+      REACT_APP_CUSTOMER_MANAGEMENT_BACKEND=http://$(hostname -I | awk '{print $1}'):8100
       EOF
         
   - name: Update IP of policy-management-frontend
     shell: |
       cat <<EOF> LakesideMutual/policy-management-frontend/.env
-      VUE_APP_POLICY_MANAGEMENT_BACKEND=http://$(curl ifconfig.me):8090
+      VUE_APP_POLICY_MANAGEMENT_BACKEND=http://$(hostname -I | awk '{print $1}'):8090
       EOF
 
   - name: Update IP of policy-management-frontend-vue
@@ -52,11 +52,18 @@
       module.exports = {
       runtimeCompiler: true,
       devServer: {
-        host: '$(curl ifconfig.me)',
+        host: "$(hostname -I | awk '{print $1}')",
         port: 3010
         }
       }
       EOF
+
+  - name: Increase the rate limit
+    lineinfile:
+      path: LakesideMutual/customer-self-service-backend/src/main/resources/application.properties
+      regexp: '^(.*)rate.limit.perMinute(.*)$'
+      line: 'rate.limit.perMinute=100000'
+      backrefs: yes
 
   - name: Run lakeside
     shell: cd  LakesideMutual/ && sudo npm install recursive-install && sudo  npm install concurrently && sudo ./run_all_applications.sh

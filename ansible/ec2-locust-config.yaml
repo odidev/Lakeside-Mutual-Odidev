@@ -12,3 +12,11 @@
 
   - name: Installing faker
     command: sudo -H pip3 install faker
+
+  - name: Create locust directory
+    command: mkdir locust
+
+  - name: Copy the Locust scripts
+    copy:
+       src: ./../load_test/
+       dest: /home/ubuntu/locust/
