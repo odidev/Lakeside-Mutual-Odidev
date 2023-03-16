@@ -1,6 +1,6 @@
 variable "ubuntu-ami" {
     description = "Ubuntu 22.04  AMI image"
-    default = "ami-0f69dd1d0d03ad669"    // Ubuntu ARM64 Image
+    default = "ami-05a7dfe63c41c160f"    // Ubuntu ARM64 Image
 }
 
 // Bastion Server Credentials 
@@ -39,43 +39,6 @@ variable "locust-instance-type" {
 }
 
 variable "locust-disk-size" {
-    description = "Root disk size of Locust server"
-    default = 8
-}
-
-
-// Traefik proxy Credentials
-
-variable "deploy_traefik_proxy" {
-    description = "Make true to deploy the traefik proxy instance"
-    default = false                    // make true to deploy an intance for traefik proxy
-}
-
-variable "traefik-proxy-instance-type" {
-    description = "Instance Type of Locust server"
-    default = "t4g.small"
-}
-
-variable "traefik-proxy-disk-size" {
-    description = "Root disk size of Locust server"
-    default = 8
-}
-
-
-
-// Lakeside node instance Credentials 
-
-variable "lakeside-node-count" {
-    description = "Make true to deploy the traefik proxy instance"
-  default = 1                
-}
-
-variable "lakeside-node-instance-type" {
-    description = "Lakeside Node instance Type "
-    default = "t4g.small"
-}
-
-variable "lakeside-node-disk-size" {
     description = "Root disk size of Locust server"
     default = 8
 }
