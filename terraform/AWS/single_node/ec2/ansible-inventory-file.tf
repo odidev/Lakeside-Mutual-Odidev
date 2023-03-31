@@ -1,7 +1,7 @@
 # Generate inventory file
 resource "local_file" "inventory" {
     depends_on=[aws_instance.lakeside-ec2,aws_instance.Locust-ec2]
-    filename = "./../../ansible/single_node/hosts"
+    filename = "./../../../ansible/single_node/hosts"
     content = <<EOF
 [lakeside]
 ${aws_instance.lakeside-ec2.private_ip}

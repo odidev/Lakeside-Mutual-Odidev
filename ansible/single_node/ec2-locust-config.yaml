@@ -18,5 +18,5 @@
 
   - name: Copy the Locust scripts
     copy:
-       src: ./../load_test/
+       src: ./../../load_test/
        dest: /home/ubuntu/locust/

@@ -10,5 +10,5 @@ resource "local_file" "inventory" {
       bastion_host_public_ip = aws_instance.BASTION.public_ip
     }
     )
-    filename = "./../../ansible/multi_node/hosts.cfg"
+    filename = "./../../../ansible/multi_node/hosts"
 }
