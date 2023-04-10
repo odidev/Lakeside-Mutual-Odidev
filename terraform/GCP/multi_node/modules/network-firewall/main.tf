@@ -58,8 +58,8 @@ resource "google_compute_firewall" "private_allow_all_network_inbound" {
     protocol = "icmp"
   }
   allow {
-    ports    = ["22","80","8080","8090","61613","61616","8100","8110","3000","3010","3020","50051","8761","9000"]
-    protocol = "tcp"
+
+    protocol = "all"
   }
 }
 
@@ -75,7 +75,6 @@ resource "google_compute_firewall" "private_allow_restricted_network_inbound" {
     protocol = "icmp"
   }
   allow {
-    ports    = ["22","80","8080","8090","61613","61616","8100","8110","3000","3010","3020","50051","8761","9000"]
-    protocol = "tcp"
+    protocol = "all"
   }
 }

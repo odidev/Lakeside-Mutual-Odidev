@@ -11,16 +11,16 @@ ${google_compute_instance.bastion_host.network_interface[0].access_config[0].nat
 
 [lakeside:vars]
 ansible_connection=ssh
-ansible_user=odidev_puresoftware_com
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh odidev_puresoftware_com@${google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip} -W %h:%p"'
+ansible_user=${var.vm_username}
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh ${var.vm_username}@${google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip} -W %h:%p"'
 
 [locust:vars]
 ansible_connection=ssh
-ansible_user=odidev_puresoftware_com
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh odidev_puresoftware_com@${google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip} -W %h:%p"'
+ansible_user=${var.vm_username}
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh ${var.vm_username}@${google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip} -W %h:%p"'
 
 [all:vars]
 ansible_connection=ssh
-ansible_user=odidev_puresoftware_com
+ansible_user=${var.vm_username}
                 EOF
 }

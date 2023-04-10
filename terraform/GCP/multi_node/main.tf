@@ -91,7 +91,7 @@ resource "google_compute_instance" "lakeside" {
   machine_type              = "t2a-standard-2"
   zone                      = var.zone
   allow_stopping_for_update = true
-  tags                      = ["private"]
+  tags                      = ["private", "http-server", "https-server"]
   boot_disk {
     source = google_compute_disk.striped-horse.name
   }
@@ -102,6 +102,7 @@ resource "google_compute_instance" "lakeside" {
       nat_ip = var.static_ip
     }
   }
+
   metadata = {
     enable-oslogin = "TRUE"
   }
@@ -115,7 +116,7 @@ resource "google_compute_instance" "lakeside-node" {
   machine_type              = "t2a-standard-2"
   zone                      = var.zone
   allow_stopping_for_update = true
-  tags                      = ["private"]
+  tags                      = ["private", "http-server", "https-server"]
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts-arm64"
@@ -142,7 +143,7 @@ resource "google_compute_instance" "locust" {
   machine_type              = "t2a-standard-2"
   zone                      = var.zone
   allow_stopping_for_update = true
-  tags                      = ["private"]
+  tags                      = ["private", "http-server", "https-server"]
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts-arm64"

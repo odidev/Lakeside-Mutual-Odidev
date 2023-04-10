@@ -18,3 +18,8 @@ variable "static_ip" {
   type        = string
   default     = null
 }
+
+variable "vm_username" {
+  description = "username of VM"
+  type        = string
+}

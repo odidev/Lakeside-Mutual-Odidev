@@ -20,5 +20,9 @@ variable "static_ip" {
 }
 variable "lakesideNodeCount" {
   description = "Lakesdie nodes"
-  default     = 3
+}
+
+variable "vm_username" {
+  description = "instance username"
+  type        = string
 }

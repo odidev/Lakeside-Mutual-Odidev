@@ -5,9 +5,14 @@ output "bastion_host_public_ip" {
 }
 
 # IP addresses of private IP addresses provisioned.
-output "Lakeside_private_ip" {
+output "Lakeside_master_private_ip" {
   description = "IP addresses of private IP addresses provisioned."
   value       = azurerm_network_interface.lakeside_nic.private_ip_address
+}
+
+output "Lakeside_node_private_ip" {
+  description = "IP addresses of private IP addresses provisioned."
+  value       = azurerm_network_interface.lakeside_node_nic.*.private_ip_address
 }
 
 output "Locust_private_ip" {
