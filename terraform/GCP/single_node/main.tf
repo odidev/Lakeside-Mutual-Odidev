@@ -28,7 +28,7 @@ resource "google_project_iam_member" "project" {
 resource "google_compute_instance" "bastion_host" {
   project      = var.project
   name         = "bastion-vm"
-  machine_type = "t2a-standard-1"
+  machine_type = var.bastion_host_machine_type
   zone         = var.zone
   tags         = ["public"]
   boot_disk {
@@ -88,7 +88,7 @@ resource "google_compute_disk" "striped-horse" {
 resource "google_compute_instance" "lakeside" {
   project                   = var.project
   name                      = "lakeside"
-  machine_type              = "t2a-standard-2"
+  machine_type              = var.lakeside_machine_type
   zone                      = var.zone
   allow_stopping_for_update = true
   tags                      = ["private"]
@@ -112,7 +112,7 @@ resource "google_compute_instance" "lakeside" {
 resource "google_compute_instance" "locust" {
   project                   = var.project
   name                      = "locust"
-  machine_type              = "t2a-standard-2"
+  machine_type              = var.locust_machine_type
   zone                      = var.zone
   allow_stopping_for_update = true
   tags                      = ["private"]

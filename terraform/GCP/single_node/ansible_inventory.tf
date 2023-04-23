@@ -1,6 +1,6 @@
 resource "local_file" "inventory" {
   depends_on = [google_compute_instance.bastion_host, google_compute_instance.lakeside, google_compute_instance.locust]
-  filename   = "./hosts"
+  filename   = "./../../../ansible/single_node/hosts"
   content    = <<EOF
 [lakeside]
 ${google_compute_instance.lakeside.network_interface[0].network_ip}

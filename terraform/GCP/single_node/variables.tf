@@ -23,3 +23,18 @@ variable "vm_username" {
   description = "username of VM"
   type        = string
 }
+
+variable "bastion_host_machine_type" {
+  description = "bastion host machine type"
+  type        = string
+}
+
+variable "lakeside_machine_type" {
+  description = "lakeside machine type"
+  type        = string
+}
+
+variable "locust_machine_type" {
+  description = "locust machine type"
+  type        = string
+}

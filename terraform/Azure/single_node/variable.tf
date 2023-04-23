@@ -23,7 +23,7 @@ variable "bastion_host_VM_size" {
 }
 
 # Lakeside master node VM size
-variable "lakeside_master_VM_size" {
+variable "lakeside_VM_size" {
   default     = "Standard_D2ps_v5"
   description = "Lakeside master node VM sizee"
 }

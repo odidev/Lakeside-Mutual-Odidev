@@ -18,11 +18,34 @@ variable "static_ip" {
   type        = string
   default     = null
 }
-variable "lakesideNodeCount" {
-  description = "Lakesdie nodes"
-}
+
 
 variable "vm_username" {
   description = "instance username"
   type        = string
 }
+
+variable "bastion_host_machine_type" {
+  description = "bastion host machine type"
+  type        = string
+}
+
+variable "lakeside_master_node_machine_type" {
+  description = "lakeside master node machine type"
+  type        = string
+}
+
+variable "lakeside_worker_node_machine_type" {
+  description = "lakeside worker machine type"
+  type        = string
+}
+
+variable "lakesideNodeCount" {
+  description = "Lakeside nodes"
+}
+
+variable "locust_machine_type" {
+  description = "locust machine type"
+  type        = string
+}
+
