@@ -13,17 +13,17 @@ ${azurerm_linux_virtual_machine.bastion_vm.public_ip_address}
 
 [lakeside:vars]
 ansible_connection=ssh
-ansible_user=azureuser
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh azureuser@${azurerm_linux_virtual_machine.bastion_vm.public_ip_address} -W %h:%p"'
+ansible_user=${var.username}
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh ${var.username}@${azurerm_linux_virtual_machine.bastion_vm.public_ip_address} -W %h:%p"'
 
 [locust:vars]
 ansible_connection=ssh
-ansible_user=azureuser
-ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh azureuser@${azurerm_linux_virtual_machine.bastion_vm.public_ip_address} -W %h:%p"'
+ansible_user=${var.username}
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh ${var.username}@${azurerm_linux_virtual_machine.bastion_vm.public_ip_address} -W %h:%p"'
 
 
 [all:vars]
 ansible_connection=ssh
-ansible_user=azureuser
+ansible_user=${var.username}
 EOF       
 }

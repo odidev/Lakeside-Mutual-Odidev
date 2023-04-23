@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine" "bastion_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.bastion_nic.id}"]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.bastion_host_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-bstn-dsk001"
@@ -63,7 +63,7 @@ resource "azurerm_linux_virtual_machine" "lakeside_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.lakeside_nic.id}"]
-  size                  = "Standard_D4ps_v5"
+  size                  = var.lakeside_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-lakeside-dsk001"
@@ -99,7 +99,7 @@ resource "azurerm_linux_virtual_machine" "locust_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.locust_nic.id}"]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.locust_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-locust-dsk001"
