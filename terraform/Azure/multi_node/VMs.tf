@@ -27,7 +27,7 @@ resource "azurerm_linux_virtual_machine" "bastion_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.bastion_nic.id}"]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.bastion_host_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-bstn-dsk001"
@@ -43,11 +43,11 @@ resource "azurerm_linux_virtual_machine" "bastion_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-bstn-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 
@@ -57,15 +57,13 @@ resource "azurerm_linux_virtual_machine" "bastion_vm" {
 
 }
 
-# Create worker host VM.
-
-# Create Lakeside VM.
+# Create Lakeside master VM.
 resource "azurerm_linux_virtual_machine" "lakeside_master_vm" {
   name                  = "${var.resource_prefix}-lakeside-master-vm001"
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.lakeside_nic.id}"]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.lakeside_master_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-lakeside-dsk001"
@@ -81,11 +79,11 @@ resource "azurerm_linux_virtual_machine" "lakeside_master_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-master-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 
@@ -102,7 +100,7 @@ resource "azurerm_linux_virtual_machine" "lakeside_nodes_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = [element(azurerm_network_interface.lakeside_node_nic.*.id, count.index)]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.lakeside_node_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-lakeside-dsk001-${count.index + 1}"
@@ -118,11 +116,11 @@ resource "azurerm_linux_virtual_machine" "lakeside_nodes_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-node-vm0-${count.index + 1}"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 
@@ -142,7 +140,7 @@ resource "azurerm_linux_virtual_machine" "locust_vm" {
   location              = var.location
   resource_group_name   = azurerm_resource_group.resource_group.name
   network_interface_ids = ["${azurerm_network_interface.locust_nic.id}"]
-  size                  = "Standard_D2ps_v5"
+  size                  = var.locust_VM_size
 
   os_disk {
     name                 = "${var.resource_prefix}-locust-dsk001"
@@ -158,11 +156,11 @@ resource "azurerm_linux_virtual_machine" "locust_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-locust-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 

@@ -19,17 +19,17 @@ variable "username" {
 # Bastion Host VM size
 variable "bastion_host_VM_size" {
   default     = "Standard_D2ps_v5"
-  description = "Username to build and use on the VM hosts."
+  description = "Bastion Host VM size"
 }
 
-# Lakeside VM size
-variable "lakeside_VM_size" {
+# Lakeside master node VM size
+variable "lakeside_master_VM_size" {
   default     = "Standard_D2ps_v5"
-  description = "Username to build and use on the VM hosts."
+  description = "Lakeside master node VM sizee"
 }
 
 # Locust VM size
 variable "locust_VM_size" {
   default     = "Standard_D2ps_v5"
-  description = "Username to build and use on the VM hosts."
+  description = "Locust VM size"
 }

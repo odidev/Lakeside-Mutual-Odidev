@@ -43,11 +43,11 @@ resource "azurerm_linux_virtual_machine" "bastion_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-bstn-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 
@@ -79,11 +79,11 @@ resource "azurerm_linux_virtual_machine" "lakeside_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-lakeside-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 
@@ -115,11 +115,11 @@ resource "azurerm_linux_virtual_machine" "locust_vm" {
   }
 
   computer_name                   = "${var.resource_prefix}-locust-vm001"
-  admin_username                  = "azureuser"
+  admin_username                  = var.username
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = var.username
     public_key = tls_private_key.lakeside-ssh-key.public_key_openssh #The magic here
   }
 

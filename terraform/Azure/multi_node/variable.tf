@@ -12,13 +12,36 @@ variable "location" {
 
 # Define username for use on the hosts.
 variable "username" {
-  default     = "ubuntu"
+  default     = "azureuser"
   description = "Username to build and use on the VM hosts."
 }
 
+# Bastion Host VM size
+variable "bastion_host_VM_size" {
+  default     = "Standard_D2ps_v5"
+  description = "Bastion Host VM size"
+}
 
-# Define username for use on the hosts.
+# Lakeside master node VM size
+variable "lakeside_master_VM_size" {
+  default     = "Standard_D2ps_v5"
+  description = "Lakeside master node VM sizee"
+}
+
+# Lakeside worker nodes VM size
+variable "lakeside_node_VM_size" {
+  default     = "Standard_D2ps_v5"
+  description = "Lakeside worker node VM size"
+}
+
+# number of lakeside worker nodes 
 variable "node_count" {
   default     = 3
-  description = "Number of lakeside worker nodes"
+  description = "Number of lakeside worker node"
+}
+
+# Locust VM size
+variable "locust_VM_size" {
+  default     = "Standard_D2ps_v5"
+  description = "Locust VM size"
 }
